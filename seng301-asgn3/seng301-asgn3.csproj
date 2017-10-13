@@ -72,7 +72,6 @@
     <Compile Include="src\Frontend2.Hardware\IPopCanAcceptor.cs" />
     <Compile Include="src\Frontend2.Hardware\IPopCanRack.cs" />
     <Compile Include="src\Frontend2.Hardware\ISelectionButton.cs" />
-    <Compile Include="src\Frontend2.Hardware\Lock.cs" />
     <Compile Include="src\Frontend2.Hardware\MessageEventArgs.cs" />
     <Compile Include="src\Frontend2.Hardware\PopCanChannel.cs" />
     <Compile Include="src\Frontend2.Hardware\PopCanEventArgs.cs" />
