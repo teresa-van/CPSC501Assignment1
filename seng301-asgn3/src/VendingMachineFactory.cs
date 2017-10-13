@@ -11,9 +11,9 @@ public class VendingMachineFactory : IVendingMachineFactory {
         this.vMs = new List<VendingMachine>();
     }
 
-    public int CreateVendingMachine(List<int> cK, int sBC, int cRC, int pRC, int recC) {
-        var coinKindArray = cK.ToArray();
-        var vm = new VendingMachine(coinKindArray, sBC, cRC, pRC, recC);
+    public int CreateVendingMachine(List<int> coinKinds, int selectionButtonCount, int coinRackCount, int popRackCount, int receptacleCount) {
+        var coinKindArray = coinKinds.ToArray();
+        var vm = new VendingMachine(coinKindArray, selectionButtonCount, coinRackCount, popRackCount, receptacleCount);
         this.vMs.Add(vm);
         new VendingMachineLogic(vm);
         return this.vMs.Count - 1;
@@ -24,8 +24,8 @@ public class VendingMachineFactory : IVendingMachineFactory {
         vm.Configure(popNames, popCosts);
     }
 
-    public void LoadCoins(int vmIndex, int cKI, List<Coin> coins) {
-        this.vMs[vmIndex].CoinRacks[cKI].LoadCoins(coins);
+    public void LoadCoins(int vmIndex, int coinKindIndex, List<Coin> coins) {
+        this.vMs[vmIndex].CoinRacks[coinKindIndex].LoadCoins(coins);
     }
 
     public void LoadPops(int vmIndex, int popKindIndex, List<PopCan> pops) {
@@ -40,7 +40,7 @@ public class VendingMachineFactory : IVendingMachineFactory {
         this.vMs[vmIndex].SelectionButtons[value].Press();
     }
 
-    public List<IDeliverable> ExtractStuff(int vmIndex) {
+    public List<IDeliverable> ExtractFromDeliveryChute(int vmIndex) {
         var vm = this.vMs[vmIndex];
         var items = vm.DeliveryChute.RemoveItems();
         var itemsAsList = new List<IDeliverable>(items);

@@ -22,21 +22,21 @@ namespace Frontend2 {
         /// (once they are created), as subsequent functions all use an index to indicate
         /// which vending machine is being acted on.
         /// 
-        /// This should throw an Exception if the cK are not unique, or one of them
+        /// This should throw an Exception if the coinKinds are not unique, or one of them
         /// is negative or zero.
         /// </summary>
-        /// <param name="cK">List of integers that represent the coin values 
+        /// <param name="coinKinds">List of integers that represent the coin values 
         ///   accepted by the vending machine.</param>
-        /// <param name="sBC">Number of pop selection buttons the vending
+        /// <param name="selectionButtonCount">Number of pop selection buttons the vending
         ///   machine has.</param>
-        /// <param name="cRC">Max number of coins that can be stored in each coin
+        /// <param name="coinRackCount">Max number of coins that can be stored in each coin
         ///   rack</param>
-        /// <param name="pRC">Max number of pops that can be stored in each
+        /// <param name="popRackCount">Max number of pops that can be stored in each
         ///   pop rack</param>
-        /// <param name="recC">Max number of items that can be stored in each
+        /// <param name="receptacleCount">Max number of items that can be stored in each
         ///   receptacle and delivery chute</param>
         /// <returns>An index referring to this specific vending machine.</returns> <summary>
-        int CreateVendingMachine(List<int> cK, int sBC, int cRC, int pRC, int recC);
+        int CreateVendingMachine(List<int> coinKinds, int selectionButtonCount, int coinRackCount, int popRackCount, int receptacleCount);
 
         /// <summary>
         /// Configures the specified vending machine with a set of names of pops, as well
@@ -61,10 +61,10 @@ namespace Frontend2 {
         /// possible to load the wrong coin into a particular coin chute.
         /// </summary>
         /// <param name="vmIndex">An index referring to a vending machine.</param>
-        /// <param name="cKI">An index referring to a specific coin chute in 
+        /// <param name="coinKindIndex">An index referring to a specific coin chute in 
         ///   the vending machine</param>
         /// <param name="coins">A list of coins to load into the coin chute</param>
-        void LoadCoins(int vmIndex, int cKI, List<Coin> coins);
+        void LoadCoins(int vmIndex, int coinKindIndex, List<Coin> coins);
 
         /// <summary>
         /// Loads pops into the specified vending machine into the specified pop chute. 
@@ -115,7 +115,7 @@ namespace Frontend2 {
         /// </summary>
         /// <param name="vmIndex">An index referring to a vending machine.</param>
         /// <returns>A flat list of pops and coins that have been dispensed</returns>
-        List<IDeliverable> ExtractStuff(int vmIndex);
+        List<IDeliverable> ExtractFromDeliveryChute(int vmIndex);
 
         /// <summary>
         /// Unloads a vending machine of all its contents: money that is still in the

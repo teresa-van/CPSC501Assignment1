@@ -46,7 +46,7 @@ namespace Frontend2.Hardware {
     public class VendingMachine {
         public bool SafetyOn { get; protected set; }
 
-        private int[] cK;
+        private int[] coinKinds;
         
         private Dictionary<int, CoinChannel> coinRackChannels;
         
@@ -74,41 +74,41 @@ namespace Frontend2.Hardware {
         * 
         * All pop kinds
         * 
-        * @param cK
+        * @param coinKinds
         *            The values (in cents) of each kind of coin. The order of the
         *            kinds is maintained. One coin rack is produced for each kind.
         *            Each kind must have a unique, positive value.
-        * @param sBC
+        * @param selectionButtonCount
         *            The number of selection buttons on the machine. Must be
         *            positive.
-        * @param cRC
+        * @param coinRackCount
         *            The maximum capacity of each coin rack in the machine. Must be
         *            positive.
         * @param popCanRackCapacity
         *            The maximum capacity of each pop can rack in the machine. Must
         *            be positive.
-        * @param recC
+        * @param receptacleCount
         *            The maximum capacity of the coin receptacle, storage bin, and
         *            delivery chute. Must be positive.
         */
-        public VendingMachine(int[] cK, int sBC, int cRC, int popCanRackCapacity, int recC) {
+        public VendingMachine(int[] coinKinds, int selectionButtonCount, int coinRackCount, int popCanRackCapacity, int receptacleCount) {
 
-            if(cK == null) {
+            if(coinKinds == null) {
                 throw new Exception("Arguments may not be null");
             }
 
-            if(sBC < 1 || cRC < 1 || popCanRackCapacity < 1) {
+            if(selectionButtonCount < 1 || coinRackCount < 1 || popCanRackCapacity < 1) {
                 throw new Exception("Counts and capacities must be positive");
             }
 
-            if(cK.Length < 1) {
+            if(coinKinds.Length < 1) {
                 throw new Exception("At least one coin kind must be accepted");
             }
 
-            this.cK = cK;
+            this.coinKinds = coinKinds;
 
-            var coinKindsSet = new HashSet<int>(cK);
-            if (coinKindsSet.Count != this.cK.Length) {
+            var coinKindsSet = new HashSet<int>(coinKinds);
+            if (coinKindsSet.Count != this.coinKinds.Length) {
                 throw new Exception("Coin kinds must have unique values");
             }
             if (coinKindsSet.Where(ck => ck < 1).Count() > 0) {
@@ -116,35 +116,35 @@ namespace Frontend2.Hardware {
             }
             
             this.Display = new Display();
-            this.CoinSlot = new CoinSlot(this.cK);
-            this.CoinReceptacle = new CoinReceptacle(recC);
-            this.StorageBin = new CoinReceptacle(recC);
-            this.DeliveryChute = new DeliveryChute(recC);
-            this.CoinRacks = new CoinRack[this.cK.Length];
+            this.CoinSlot = new CoinSlot(this.coinKinds);
+            this.CoinReceptacle = new CoinReceptacle(receptacleCount);
+            this.StorageBin = new CoinReceptacle(receptacleCount);
+            this.DeliveryChute = new DeliveryChute(receptacleCount);
+            this.CoinRacks = new CoinRack[this.coinKinds.Length];
             this.coinRackChannels = new Dictionary<int, CoinChannel>();
-            for(int i = 0; i < this.cK.Length; i++) {
-                this.CoinRacks[i] = new CoinRack(cRC);
+            for(int i = 0; i < this.coinKinds.Length; i++) {
+                this.CoinRacks[i] = new CoinRack(coinRackCount);
                 this.CoinRacks[i].Connect(new CoinChannel(this.DeliveryChute));
-                this.coinRackChannels[this.cK[i]] = new CoinChannel(CoinRacks[i]);
+                this.coinRackChannels[this.coinKinds[i]] = new CoinChannel(CoinRacks[i]);
             }
 
-            this.PopCanRacks = new PopCanRack[sBC];
-            for(int i = 0; i < sBC; i++) {
+            this.PopCanRacks = new PopCanRack[selectionButtonCount];
+            for(int i = 0; i < selectionButtonCount; i++) {
                 this.PopCanRacks[i] = new PopCanRack(popCanRackCapacity);
                 this.PopCanRacks[i].Connect(new PopCanChannel(DeliveryChute));
             }
 
-            this.PopCanNames = new string[sBC];
-            for(int i = 0; i < sBC; i++) {
+            this.PopCanNames = new string[selectionButtonCount];
+            for(int i = 0; i < selectionButtonCount; i++) {
                 this.PopCanNames[i] = "<default>";
             }
-            this.PopCanCosts = new int[sBC];
-            for(int i = 0; i < sBC; i++) {
+            this.PopCanCosts = new int[selectionButtonCount];
+            for(int i = 0; i < selectionButtonCount; i++) {
                 this.PopCanCosts[i] = 1;
             }
 
-            this.SelectionButtons = new SelectionButton[sBC];
-            for(int i = 0; i < sBC; i++) {
+            this.SelectionButtons = new SelectionButton[selectionButtonCount];
+            for(int i = 0; i < selectionButtonCount; i++) {
                 this.SelectionButtons[i] = new SelectionButton();
             }
 
@@ -249,7 +249,7 @@ namespace Frontend2.Hardware {
         * @return The coin kind at the specified index.
         */
         public int GetCoinKindForCoinRack(int index) {
-            return this.cK[index];
+            return this.coinKinds[index];
         }
 
 
