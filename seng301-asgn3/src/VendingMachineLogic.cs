@@ -16,14 +16,25 @@ public class VendingMachineLogic {
         this.availableFunds = 0;
         this.vm.CoinSlot.CoinAccepted += new EventHandler<CoinEventArgs>(CoinSlot_CoinAccepted);
 
+        CreateSelectionButtons();
+        CreateCoinRacks();
+    }
+
+    public void CreateSelectionButtons()
+    {
         this.selectionButtonToIndex = new Dictionary<SelectionButton, int>();
-        for (int i = 0; i < this.vm.SelectionButtons.Length; i++) {
+        for (int i = 0; i < this.vm.SelectionButtons.Length; i++)
+        {
             this.vm.SelectionButtons[i].Pressed += new EventHandler(SelectionButton_Pressed);
             this.selectionButtonToIndex[this.vm.SelectionButtons[i]] = i;
         }
+    }
 
+    public void CreateCoinRacks()
+    {
         this.coinKindToCoinRackIndex = new Dictionary<int, int>();
-        for (int i = 0; i < this.vm.CoinRacks.Length; i++) {
+        for (int i = 0; i < this.vm.CoinRacks.Length; i++)
+        {
             this.coinKindToCoinRackIndex[this.vm.GetCoinKindForCoinRack(i)] = i;
         }
     }
