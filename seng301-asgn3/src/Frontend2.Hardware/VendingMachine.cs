@@ -49,7 +49,9 @@ namespace Frontend2.Hardware {
         private int[] coinKinds;
         
         private Dictionary<int, CoinChannel> coinRackChannels;
-        
+
+        public VendingMachineSafety Safety { get; protected set; }
+
         public int[] PopCanCosts { get; protected set; }
         public string[] PopCanNames { get; protected set; }
 
@@ -155,6 +157,9 @@ namespace Frontend2.Hardware {
             this.OutOfOrderLight = new IndicatorLight();
 
             this.SafetyOn = false;
+
+            this.Safety = new VendingMachineSafety(SafetyOn, CoinSlot, DeliveryChute,
+            ExactChangeLight, OutOfOrderLight, PopCanRacks, CoinRacks);
         }
 
         /**
@@ -185,44 +190,6 @@ namespace Frontend2.Hardware {
             this.PopCanCosts = popCanCosts.ToArray();
         }
 
-        /**
-        * Disables all the components of the hardware that involve physical
-        * movements. Activates the out of order light.
-        */
-        public void EnableSafety() {
-            this.SafetyOn = true;
-            this.CoinSlot.Disable();
-            this.DeliveryChute.Disable();
-
-            foreach(var popCanRack in this.PopCanRacks) {
-                popCanRack.Disable();
-            }
-
-            foreach(var coinRack in this.CoinRacks) {
-                coinRack.Disable();
-            }
-
-            this.OutOfOrderLight.Activate();
-        }
-
-        /**
-        * Enables all the components of the hardware that involve physical
-        * movements. Deactivates the out of order light.
-        */
-        public void DisableSafety() {
-            this.SafetyOn = false;
-            this.CoinSlot.Enable();
-            this.DeliveryChute.Enable();
-
-            foreach(var popCanRack in this.PopCanRacks) {
-                popCanRack.Enable();
-            }
-            foreach(var coinRack in this.CoinRacks) {
-                coinRack.Enable();
-            }
-
-            this.OutOfOrderLight.Deactivate();
-        }
 
         /**
         * Accesses the coin rack that handles coins of the specified kind. If none

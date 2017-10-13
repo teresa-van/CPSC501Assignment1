@@ -78,6 +78,7 @@
     <Compile Include="src\Frontend2.Hardware\PopCanRack.cs" />
     <Compile Include="src\Frontend2.Hardware\SelectionButton.cs" />
     <Compile Include="src\Frontend2.Hardware\VendingMachine.cs" />
+    <Compile Include="src\Frontend2.Hardware\VendingMachineSafety.cs" />
     <Compile Include="src\Frontend2\Coin.cs" />
     <Compile Include="src\Frontend2\IDeliverable.cs" />
     <Compile Include="src\Frontend2\IVendingMachineFactory.cs" />
